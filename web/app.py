@@ -6,14 +6,14 @@ from flask import Flask, render_template, abort, send_from_directory  #importing
 
 app = Flask(__name__)                                   #dont know what this does
 
+DOCROOT = config.configuration().DOCROOT                #get the DOCROOT from the config file
+forbidden = ['//', '~', '..']                           # making a list of forbidden characters
 
 @app.route("/<path:filename>")                          #rounting the request
 def request_handler(filename):                          #function for handling the request
-    forbidden = ['//', '~', '..']                       # making a list of forbidden characters
     if any(x in filename for x in forbidden):           #reused from P1, if any forbidden combinations in filename
         abort(403)                                      #aborting with a 403 error
 
-    DOCROOT = config.configuration().DOCROOT            #otherwise we get the DOCROOT from the config file
     return send_from_directory(DOCROOT, filename), 200  #and then the file from DOCROOT directory
 
 @app.errorhandler(403)                                  #error handler for a 403 error
