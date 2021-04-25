@@ -6,10 +6,10 @@ from flask import Flask, render_template, abort, send_from_directory  #importing
 
 app = Flask(__name__)                                   #dont know what this does
 
-forbidden = ['//', '~', '..']                           #making a list of forbidden characters
 
 @app.route("/<DOCROOT:filename>")                       #rounting the request
 def request_handler(filename):                          #function for handling the request
+    forbidden = ['//', '~', '..']                       # making a list of forbidden characters
     if any(x in filename for x in forbidden):           #reused from P1, if any forbidden combinations in filename
         abort(403)                                      #aborting with a 403 error
 
